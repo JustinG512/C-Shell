@@ -1,0 +1,8 @@
+ls > output.txt
+ls -la >> output.txt
+cat < output.txt > output2.txt
+cat < output.txt >> output2.txt
+ls -la | grep myshell.c
+ls & sleep 10 & sleep 11 &
+ps u
+

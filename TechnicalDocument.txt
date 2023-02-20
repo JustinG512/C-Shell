@@ -1,0 +1,103 @@
+Problem Solution
+    - In this project, we have been tasked to build a simple Unix/Linux shell. In this assignment, you will implement a
+command line interpreter (CLI) or, as it is more commonly known, a shell. The shell should operate in this basic way:
+when you type in a command (in response to its prompt), the shell creates a child process that executes the command
+you entered and then prompts for more user input when it has finished.
+
+Program implementation
+    - Using ```prompt> ./>make clean``` will remove the following files from the unpackDirectory. This should be completed first to ensure there are no leftover files in the directory
+      - rm myshell myshell.o myshellfunc.o
+    - Using ```prompt> ./>make``` will compile the .c file using the following flags 'Wall and Werror'
+      - gcc -c -o myshell.o myshell.c -I.
+      - gcc -c -o myshellfunc.o myshellfunc.c -I.
+      - gcc -o myshell myshell.o myshellfunc.o -Wall -Werror
+
+Complication Function Explanation
+    - Less complication functions will not be explained this assignmend in detail.  At this point, it is understood that if/if else/else and conditional statements should be close to mastered.
+    - Running in Background / Running in the foreground explained
+    - Executing multiple arguments with background flags explained
+
+    /*Find any & (if any)  This is needed to determine if the function should execute in background mode, or
+         * in foreground mode.  There are two functions below.  Background entry in atleast one argument detected,
+         * or background mode not detected at all.  It is possible to have background and not background tasks execute
+         * together in one line*/
+    /*If background & flag is not detected, the commands will execute in foreground mode only.  This will fork() a
+         * child process so that execvp() can execute and the user will be return to the shell.  This is mandatory
+         * due to the way that execvp will exit upon completion*/
+    /*If background & flag is  detected, multiple steps need to be taken to ensure that there is no data loss and
+         * the correct vector is being processed.
+         * Step 1: This will run a for loop that will catch the first & up to the last entry in the argv.  If if loop
+         * reaches the last entry it will remove the '&' and replace with null and send the argv to execvp()
+         * Step 2: For this loop we have a vector increment.  This will determine where the & is found in a multi line
+         * string and do the following
+         *  -loop i=0->argc
+         *  -set '&' to NULL
+         *  -move the vector from *arg to *args + vectorIncrement
+         *  -Fork() and send vector to execvp()
+         *  -RESET:vectorIncrement to 0
+         *  -vectorIncrement = 0 + i
+         *  LOOP RETURN: This way if another & is found before reaching the end, the current vector will be 0 + i + 1
+         *  WHY + 1?  The argv needs to be sent AFTER the null value!*/
+
+
+
+Program documentation
+    - # Basic Supported Shell Commands:
+          cd <directory>  - Change the current default directory to
+              <directory>. If the <directory> argument is not present, report the current directory. If the directory does not exist an appropriate error should be reported. This command should also change the PWD environment variable.
+          clr             - Clear the screen.
+          dir <directory> - List the contents of directory <directory>.
+          environ         - List all the environment strings.
+          echo <comment>  - Display  <comment> on the display followed by a new line (multiple spaces/tabs may be reduced to a single space).
+          help            - Display the user manual using the more filter.
+          pause           - Pause operation of the shell until ‘Enter’ is pressed.
+          quit            - Quit the shell.
+
+      # Other Shell Commands accessible through /bin/ can be found on http://www.gnu.org/ or other linux websites
+
+      # Custom Modifiers
+          Piping - A pipe is a form of redirection (transfer of standard output to some other destination) that is used in Linux and other Unix-like operating systems to send the output of one command/program/process to another command/program/process for further processing.
+              usage:
+              myshell> command_1 | command_2 | command_3 | .... | command_N
+
+          Background - An ampersand (&) at the end of the command line indicates that the shell should return to the command line prompt immediately after launching that program.
+              usage:
+              myshell> command_1 & command_2 & command_3 &
+                  This will execute three commands.
+                      command_1 will run in the background
+                      command_2 will run in the background
+                      command_3 will run in the background
+
+              myshell> command_1 & command_2 & command_3
+                  This will execute three commands.
+                      command_1 will run in the background
+                      command_2 will run in the background
+                      command_3 will run in the foreground
+
+          I/O Redirection
+              The ‘<‘ symbol is used for input(STDIN) redirection
+              The ‘>‘ symbol is used for output (STDOUT) redirection.
+              If you do not want a file to be overwritten but want to add more content to an existing file, then you should use ‘>>‘ operator.
+
+
+      Exit status:
+       0  if OK,
+       1  if minor problems
+       2  if serious trouble
+
+Testing methods and
+- Testing input and output restrictions
+- Testing values to include outside of range to test seg faults
+- Testing built-ins (along with options)
+
+Results of applying the tests.
+- Testing input and output restrictions
+    This was completed through multiple attempts of the build in through multiple string values. The build ins are simple,
+    in a way where you would program them as they are strictly guided to be used.  A redesign is needed, but ultimately,
+    these are meant to be programmed cookie cutter.
+- Testing values to include outside of range to test seg faults
+    Since minimal numerical values are used in the console, this leaves the discussions up to the coded to correctly
+    place the flags, values, and variables begin the scenes.  Most of the trial and error was completed through the console,
+    but the majority of the word was completed on paper.  Tracking ints and making sure that your array was completed.
+- Testing built-ins (along with options)
+    Similar to the other values, options normally start at argv[1] except for the piped values depending on your parse.

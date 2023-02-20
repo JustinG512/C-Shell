@@ -1,0 +1,51 @@
+User Manual
+
+# Developed for Project 2-SP22: Developing a Linux Shell
+- Justin Gallagher, Project 2: The C Shell
+- CIS 3207, Section 004 //Spring 2022 //Instructor: Professor Gene Kwatny
+
+# Basic Supported Shell Commands:
+    cd <directory>  - Change the current default directory to
+        <directory>. If the <directory> argument is not present, report the current directory. If the directory does not exist an appropriate error should be reported. This command should also change the PWD environment variable.
+    clr             - Clear the screen.
+    dir <directory> - List the contents of directory <directory>.
+    environ         - List all the environment strings.
+    echo <comment>  - Display  <comment> on the display followed by a new line (multiple spaces/tabs may be reduced to a single space).
+    help            - Display the user manual using the more filter.
+    pause           - Pause operation of the shell until ‘Enter’ is pressed.
+    quit            - Quit the shell.
+
+# Other Shell Commands accessible through /bin/ can be found on http://www.gnu.org/ or other linux websites
+
+# Custom Modifiers
+    Piping - A pipe is a form of redirection (transfer of standard output to some other destination) that is used in Linux and other Unix-like operating systems to send the output of one command/program/process to another command/program/process for further processing.
+        usage:
+        myshell> command_1 | command_2 | command_3 | .... | command_N
+
+    Background - An ampersand (&) at the end of the command line indicates that the shell should return to the command line prompt immediately after launching that program.
+        usage:
+        myshell> command_1 & command_2 & command_3 &
+            This will execute three commands.
+                command_1 will run in the background
+                command_2 will run in the background
+                command_3 will run in the background
+
+        myshell> command_1 & command_2 & command_3
+            This will execute three commands.
+                command_1 will run in the background
+                command_2 will run in the background
+                command_3 will run in the foreground
+
+    I/O Redirection
+        The ‘<‘ symbol is used for input(STDIN) redirection
+        The ‘>‘ symbol is used for output (STDOUT) redirection.
+        If you do not want a file to be overwritten but want to add more content to an existing file, then you should use ‘>>‘ operator.
+
+
+Exit status:
+ 0  if OK,
+ 1  if minor problems
+ 2  if serious trouble
+
+More assistance can be found in the README.md!
+
